@@ -161,6 +161,7 @@
           <li><label>Base</label><select id="clockcap-base"></select></li>
           <li><label>Hand</label><select id="clockcap-hand"></select></li>
         </ul>
+        <button id="clockcap-random">Random!!</button>
       </div>
     </div>
 
@@ -247,14 +248,31 @@ const ClockCapSimulator = {
     ["Smokey", "rgb(44,24,24)"],
   ],
 
-  changeColor: (partsName, svgColor) => {
+  // Choose random color for each parts
+  randomize() {
+    const colors = ClockCapSimulator.colors;
+    for (let partsName in ClockCapSimulator.areas) {
+      const n = Math.floor(Math.random() * colors.length);
+      ClockCapSimulator.changeColor(partsName, colors[n][1]);
+      ClockCapSimulator.selectColor(partsName, n);
+    }
+  },
+
+  selectColor(partsName, idx) {
+    document.getElementById(partsName)
+      .options[idx]
+      .setAttribute("selected", "selected");
+  },
+
+  // Paint the part with the color
+  changeColor(partsName, svgColor) {
     const svg = ClockCapSimulator.svg;
     ClockCapSimulator.areas[partsName].forEach(svgId => {
       svg.querySelector(`#${svgId} path`).setAttribute("fill", svgColor);
     });
   },
 
-  run: () => {
+  initializeSelectors() {
     const colors = ClockCapSimulator.colors;
     document.querySelectorAll('div#clockcap-form select').forEach(select => {
       colors.forEach(item => {
@@ -271,6 +289,12 @@ const ClockCapSimulator = {
       // Paint it with the first color
       ClockCapSimulator.changeColor(select.id, colors[0][1]);
     });
+  },
+
+  run() {
+    ClockCapSimulator.initializeSelectors();
+    document.querySelector("#clockcap-random")
+      .addEventListener("click", ClockCapSimulator.randomize);
   }
 };
 ClockCapSimulator.run();
