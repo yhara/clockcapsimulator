@@ -140,6 +140,7 @@ class ClockCapSimulator < Ovto::App
         AREAS.each_key do |part_name|
           o PartSelector, part_name: part_name
         end
+        o 'br'
         o ColorList
         #o 'pre#debug', state.to_h.inspect
       end
