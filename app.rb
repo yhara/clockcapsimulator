@@ -3,11 +3,11 @@ require 'ovto'
 class ClockCapSimulator < Ovto::App
   # Mapping from select id to svg areas.
   AREAS = {
-    dial: ["id4"],
-    numbers: ["id5", "id6", "id7", "id8"],
-    crown: ["id12"],
-    base: ["id3"],
-    hand: ["id9", "id10", "id11"],
+    dial: [1],
+    numbers: [2],
+    crown: [3],
+    base: [4],
+    hand: [5],
   }
 
   # Mapping from color name to svg color.
@@ -126,9 +126,9 @@ class ClockCapSimulator < Ovto::App
 
     # Paint the part with the color
     def self.paint(part_name, svg_color)
-      svg = `document.getElementById("clockcap")`
-      AREAS[part_name].each do |svg_id|
-        sel = "##{svg_id} path"
+      svg = `document.getElementById("clockcap-svg")`
+      AREAS[part_name].each do |idx|
+        sel = "#clockcap-svg path:nth-child(#{idx})"
         `svg.querySelector(#{sel}).setAttribute("fill", #{svg_color});`
       end
     end
