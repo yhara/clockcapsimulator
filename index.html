@@ -2,17 +2,14 @@
 <html lang="en"> 
   <head> 
     <meta charset="utf-8" /> 
-    <title></title>
+    <meta content="width=device-width,initial-scale=1.0" name="viewport">
+    <title>Unofficial Clock Cap Configurator</title>
+    <script type='text/javascript' src='app.js'></script>
   </head>
   <body>
 
-    <h1>Unofficial Clock Cap Color Simulator</h1>
+    <h1>Unofficial <a href="https://www.keycapcustoms.com/product/7311512/clock-cap">Clock Cap</a> Color Simulator</h1>
 
-    Clock Cap | KeyCapCustoms https://www.keycapcustoms.com/product/7311512/clock-cap
-
-    <div style="display: flex;">
-      <div>
-    
 <svg id="clockcap" version="1.2" width="105mm" height="148mm" viewBox="0 0 21000 29700" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:presentation="http://sun.com/xmlns/staroffice/presentation" xmlns:smil="http://www.w3.org/2001/SMIL20/" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xml:space="preserve">
  <defs class="ClipPathGroup">
   <clipPath id="presentation_clip_path" clipPathUnits="userSpaceOnUse">
@@ -152,152 +149,9 @@
  </g>
 </svg>
 
-      </div>
-      <div id="clockcap-form">
-        <ul>
-          <li><label>Dial</label><select id="clockcap-dial"></select></li>
-          <li><label>Numbers/Stripes</label><select id="clockcap-numbers"></select></li>
-          <li><label>Crown</label><select id="clockcap-crown"></select></li>
-          <li><label>Base</label><select id="clockcap-base"></select></li>
-          <li><label>Hand</label><select id="clockcap-hand"></select></li>
-        </ul>
-        <button id="clockcap-random">Random!!</button>
-      </div>
-    </div>
+<div id='ovto'></div>
+<div id='ovto-debug'></div>
 
     <a href='https://github.com/yhara/clockcapsimulator/'>source: github</a>
-
-<script type="text/javascript"> 
-const ClockCapSimulator = {
-  svg: document.querySelector('#clockcap'),
-
-  // Mapping from select id to svg areas.
-  areas: {
-    "clockcap-dial": ["id4"],
-    "clockcap-numbers": ["id5", "id6", "id7", "id8"],
-    "clockcap-crown": ["id12"],
-    "clockcap-base": ["id3"],
-    "clockcap-hand": ["id9", "id10", "id11"],
-  },
-
-  // Mapping from color name to svg color.
-  // The order is the same as the shopping page.
-  colors: [
-    ["Dead White", "rgb(255,255,255)"],
-    ["Moon Yellow", "rgb(255,255,53)"],
-    ["Sun Yellow", "rgb(253, 204, 47)"],
-    ["Gold Yellow", "rgb(248, 178, 42)"],
-    ["Orange Gire", "rgb(231, 98, 45)"],
-    ["Hot Orange", "rgb(216,32,37)"],
-    ["Bloody Red", "rgb(185, 25, 38)"],
-    ["Gory Red", "rgb(128, 16, 23)"],
-    ["Scarlett Red", "rgb(115, 24, 42)"],
-    ["Squid Pink", "rgb(218, 131, 176)"],
-    ["Warlord Purple", "rgb(127, 23, 59)"],
-    ["Hexed Lichen", "rgb(51, 41, 73)"],
-    ["Royal Purple", "rgb(34, 42, 75)"],
-    ["Dark Blue", "rgb(24, 38, 84)"],
-    ["Stormy Blue", "rgb(21, 32, 74)"],
-    ["Night Blue", "rgb(19, 32, 56)"],
-    ["Imperial Blue", "rgb(17, 32, 66)"],
-    ["Magic Blue", "rgb(6,64,121)"],
-    ["Ultramarine Blue", "rgb(36, 49, 131)"],
-    ["Electric Blue", "rgb(21, 140, 187)"],
-    ["Turqoise", "rgb(10, 94, 95)"],
-    ["Foul Green", "rgb(40, 138, 107)"],
-    ["Jade Green", "rgb(16, 126, 108)"],
-    ["Scurvy Green", "rgb(9, 71, 72)"],
-    ["Dark Green", "rgb(10, 48, 38)"],
-    ["Sick Green", "rgb(12, 93, 44)"],
-    ["Goblin Green", "rgb(23, 107, 45)"],
-    ["Camouflage Green", "rgb(112, 114, 48)"],
-    ["Escorpena Green", "rgb(76,168,60)"],
-    ["Livery Green", "rgb(171, 200, 91)"],
-    ["Bonewhite", "rgb(234, 196, 137)"],
-    ["Dead Flesh", "rgb(199, 188, 134)"],
-    ["Bronze Fleshtone", "rgb(223, 156, 94)"],
-    ["Filthy Brown", "rgb(239, 144, 42)"],
-    ["Scrofulous Brown", "rgb(210, 126, 41)"],
-    ["Plague Brown", "rgb(207, 155, 41)"],
-    ["Leather Brown", "rgb(119, 82, 35)"],
-    ["Dwarf Skin", "rgb(206, 123, 98)"],
-    ["Parasite Brown", "rgb(177, 72, 32)"],
-    ["Beasty Brown", "rgb(94, 73, 50)"],
-    ["Dark Fleshtone", "rgb(83, 46, 41)"],
-    ["Charred Brown", "rgb(63, 53, 58)"],
-    ["Ghost Grey", "rgb(182, 203, 219)"],
-    ["Wolf Grey", "rgb(164,177,195)"],
-    ["Sombre Grey", "rgb(71, 91, 119)"],
-    ["Stonewall Grey", "rgb(137, 146, 148)"],
-    ["Cold Grey", "rgb(86, 100, 105)"],
-    ["Black", "rgb(1, 6, 6)"],
-    ["Silver", "rgb(144, 155, 157)"],
-    ["Chainmal Silver", "rgb(112, 123, 124)"],
-    ["Gunmetal", "rgb(72, 87, 85)"],
-    ["Bright Bronze", "rgb(197, 158, 45)"],
-    ["Brassy Brass", "rgb(109, 69, 39)"],
-    ["Hammered Copper", "rgb(92, 44, 36)"],
-    ["Tinny Tin", "rgb(60, 39, 36)"],
-    ["Kakhi", "rgb(150, 134, 108)"],
-    ["Earth", "rgb(116, 85, 58)"],
-    ["Desert Yellow", "rgb(149, 124, 65)"],
-    ["Yellow Olive", "rgb(6, 59, 46)"],
-    ["Terracota", "rgb(111, 29, 23)"],
-    ["Tan", "rgb(161, 69, 67)"],
-    ["Cayman Green", "rgb(41, 85, 67)"],
-    ["Smokey", "rgb(44,24,24)"],
-  ],
-
-  // Choose random color for each parts
-  randomize() {
-    const colors = ClockCapSimulator.colors;
-    for (let partsName in ClockCapSimulator.areas) {
-      const n = Math.floor(Math.random() * colors.length);
-      ClockCapSimulator.changeColor(partsName, colors[n][1]);
-      ClockCapSimulator.selectColor(partsName, n);
-    }
-  },
-
-  selectColor(partsName, idx) {
-    document.getElementById(partsName)
-      .options[idx]
-      .setAttribute("selected", "selected");
-  },
-
-  // Paint the part with the color
-  changeColor(partsName, svgColor) {
-    const svg = ClockCapSimulator.svg;
-    ClockCapSimulator.areas[partsName].forEach(svgId => {
-      svg.querySelector(`#${svgId} path`).setAttribute("fill", svgColor);
-    });
-  },
-
-  initializeSelectors() {
-    const colors = ClockCapSimulator.colors;
-    document.querySelectorAll('div#clockcap-form select').forEach(select => {
-      colors.forEach(item => {
-        const [name, value] = item;
-        const nameText = document.createTextNode(name);
-        const option = document.createElement("option");
-        option.appendChild(nameText);
-        option.value = value;
-        select.appendChild(option);
-      });
-      select.addEventListener("change", ev => {
-        ClockCapSimulator.changeColor(ev.target.id, ev.target.value);
-      });
-      // Paint it with the first color
-      ClockCapSimulator.changeColor(select.id, colors[0][1]);
-    });
-  },
-
-  run() {
-    ClockCapSimulator.initializeSelectors();
-    document.querySelector("#clockcap-random")
-      .addEventListener("click", ClockCapSimulator.randomize);
-  }
-};
-ClockCapSimulator.run();
-</script> 
   </body>
 </html>
