@@ -7,7 +7,7 @@ class ClockCapSimulator < Ovto::App
     numbers: [2],
     crown: [3],
     base: [4],
-    hand: [5],
+    hand: [6],
   }
 
   # Mapping from color name to svg color.
