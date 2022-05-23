@@ -82,10 +82,10 @@ class ClockCapSimulator < Ovto::App
   def setup
     colors = state.colors
     begin
-      saved = JSON.parse(`localStorage.getItem('colors');`)
-      if saved.is_a?(Hash)
-        colors = saved
-      end
+      #saved = JSON.parse(`localStorage.getItem('colors');`)
+      #if saved.is_a?(Hash)
+      #  colors = saved
+      #end
     rescue
       # Just use default
     end
@@ -137,12 +137,23 @@ class ClockCapSimulator < Ovto::App
   class MainComponent < Ovto::Component
     def render
       o '#MainComponent' do
+        o DownloadButton
         AREAS.each_key do |part_name|
           o PartSelector, part_name: part_name
         end
         o 'br'
         o ColorList
         #o 'pre#debug', state.to_h.inspect
+      end
+    end
+
+    class DownloadButton < Ovto::Component
+      def render
+        o "input", {
+          type: "button",
+          value: "Download Image",
+          onclick: ->{ ClockCapSimulator.download_image }
+        }
       end
     end
 
@@ -194,6 +205,29 @@ class ClockCapSimulator < Ovto::App
         end
       end
     end
+  end
+
+  # Generate PNG image and show download dialog
+  def self.download_image
+    filename = "clockcap.png"
+    %x{
+      const svg = document.getElementById("clockcap-svg");
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement("canvas");
+      canvas.width = svg.width.baseVal.value;
+      canvas.height = svg.height.baseVal.value;
+
+      const ctx = canvas.getContext("2d");
+      const image = new Image;
+      image.onload = function(){
+          ctx.drawImage( image, 0, 0 );
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.setAttribute("download", #{filename});
+          a.dispatchEvent(new MouseEvent("click"));
+      };
+      image.src = "data:image/svg+xml;charset=utf-8;base64," + btoa(unescape(encodeURIComponent(svgData))); 
+    }
   end
 end
 
