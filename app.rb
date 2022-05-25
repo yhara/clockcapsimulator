@@ -82,10 +82,10 @@ class ClockCapSimulator < Ovto::App
   def setup
     colors = state.colors
     begin
-      #saved = JSON.parse(`localStorage.getItem('colors');`)
-      #if saved.is_a?(Hash)
-      #  colors = saved
-      #end
+      saved = JSON.parse(`localStorage.getItem('colors');`)
+      if saved.is_a?(Hash)
+        colors = saved
+      end
     rescue
       # Just use default
     end
